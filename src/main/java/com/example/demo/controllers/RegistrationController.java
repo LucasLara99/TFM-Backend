@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/register")
 public class RegistrationController {
@@ -25,7 +27,7 @@ public class RegistrationController {
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest) {
         // Validar los datos del usuario
         if (userRepository.findByEmail(registrationRequest.getEmail()) != null) {
-            return ResponseEntity.badRequest().body("El email ya está registrado");
+            return ResponseEntity.badRequest().body(Map.of("error", "El email ya está registrado"));
         }
 
         // Hashear la contraseña
@@ -39,6 +41,6 @@ public class RegistrationController {
         // Guardar el objeto User en la base de datos
         userRepository.save(user);
 
-        return ResponseEntity.ok().body("Registro exitoso");
+        return ResponseEntity.ok().body(Map.of("message", "Registro exitoso"));
     }
 }
