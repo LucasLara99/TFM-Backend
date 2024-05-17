@@ -5,6 +5,7 @@ import com.example.demo.services.LeagueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,20 @@ public class LeagueController {
             return new ResponseEntity<>(leagues, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving leagues: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getLeague(@PathVariable int id) {
+        try {
+            League league = leagueService.getLeague(id);
+            if (league != null) {
+                return new ResponseEntity<>(league, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("League not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving league: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
