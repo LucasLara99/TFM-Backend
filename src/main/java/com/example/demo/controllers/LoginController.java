@@ -31,9 +31,11 @@ public class LoginController {
             String token = jwtUtil.generateToken(user);
             jwtUtil.parseJwtToken(token); // Esto es solo para verificar el token en el servidor
 
-            // Crea un objeto de respuesta que contiene el usuario y el token
+            // Crea un objeto de respuesta que contiene solo el email, la facultad y el rol del usuario y el token
             Map<String, Object> response = new HashMap<>();
-            response.put("user", user);
+            response.put("email", user.getEmail());
+            response.put("facultad", user.getFacultad());
+            response.put("rol", user.getRol());
             response.put("token", token);
 
             return ResponseEntity.ok(response); // Devuelve el objeto de respuesta
