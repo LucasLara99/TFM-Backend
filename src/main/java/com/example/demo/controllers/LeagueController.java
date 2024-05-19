@@ -1,13 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Group;
 import com.example.demo.entities.League;
 import com.example.demo.services.LeagueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +41,18 @@ public class LeagueController {
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving league: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{leagueId}/groups")
+    public ResponseEntity<?> createGroup(@PathVariable Long leagueId, @RequestBody Group group) {
+        try {
+            group.setLeagueId(leagueId);
+            Group createdGroup = leagueService.createGroup(group);
+            return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating group: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

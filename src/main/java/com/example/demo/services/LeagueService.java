@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.entities.Group;
 import com.example.demo.entities.League;
 import com.example.demo.repositories.LeagueRepository;
 import com.example.demo.repositories.PeriodRepository;
@@ -24,6 +25,10 @@ public class LeagueService {
 
     public List<League> getAllLeagues() {
         return leagueRepository.findAll();
+    }
+
+    public Group createGroup(Group group) {
+        return groupRepository.save(group);
     }
 
     public League getLeague(int id) {
