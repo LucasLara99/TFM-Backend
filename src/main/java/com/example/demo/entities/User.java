@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -26,6 +28,9 @@ public class User {
 
     @Column(name = "facultad", nullable = false)
     private String facultad;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToMany
     @JoinTable(

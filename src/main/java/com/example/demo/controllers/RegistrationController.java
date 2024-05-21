@@ -38,7 +38,8 @@ public class RegistrationController {
         User user = new User();
         user.setEmail(registrationRequest.getEmail());
         user.setPassword(hashedPassword);
-        user.setFacultad(registrationRequest.getFacultad()); // Agregar la facultad al usuario
+        user.setFacultad(registrationRequest.getFacultad());
+        user.setName(registrationRequest.getName());
         user.setRol("USER"); // Asignar el rol USER al usuario
 
         // Guardar el objeto User en la base de datos

@@ -23,12 +23,16 @@ public class Team {
     private String location;
 
     @Column(name = "max_places", nullable = false)
-    private int maxPlaces;
+    private int max_places;
 
     @Column(name = "current_users", nullable = false)
-    private int currentUsers;
+    private int current_users;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

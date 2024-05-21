@@ -4,7 +4,9 @@ import com.example.demo.entities.Group;
 import com.example.demo.entities.League;
 import com.example.demo.entities.Team;
 import com.example.demo.entities.User;
+import com.example.demo.requests.TeamCreationRequest;
 import com.example.demo.services.LeagueService;
+import com.example.demo.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,9 +19,11 @@ import java.util.List;
 public class LeagueController {
 
     private final LeagueService leagueService;
+    private final UserService userService;
 
-    public LeagueController(LeagueService leagueService) {
+    public LeagueController(LeagueService leagueService, UserService userService) {
         this.leagueService = leagueService;
+        this.userService = userService;
     }
 
     @GetMapping("/all")
@@ -48,11 +52,31 @@ public class LeagueController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{leagueId}/groups/{groupId}/teams")
-    public ResponseEntity<?> createTeamInGroup(@PathVariable Long leagueId, @PathVariable Long groupId, @RequestBody Team team) {
+    public ResponseEntity<?> createTeamInGroup(@PathVariable Long leagueId, @PathVariable Long groupId, @RequestBody TeamCreationRequest teamCreationRequest) {
         try {
+            Team team = teamCreationRequest.getTeam();
+            Long userId = teamCreationRequest.getUserId();
+
+            if (team == null) {
+                return new ResponseEntity<>("Team data is missing", HttpStatus.BAD_REQUEST);
+            }
+
+            User user = userService.getUserById(userId);
+            if (user == null) {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+
             Group group = leagueService.getGroupById(groupId);
             if (group != null && group.getLeague().getId().equals(leagueId)) {
+                // Check if team name already exists in the group
+                for (Team existingTeam : group.getTeams()) {
+                    if (existingTeam.getName().equals(team.getName())) {
+                        return new ResponseEntity<>("Team name already exists in the group", HttpStatus.CONFLICT);
+                    }
+                }
+
                 team.setGroup(group);
+                team.setUser(user);
                 Team createdTeam = leagueService.createTeam(team);
                 return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
             } else {
