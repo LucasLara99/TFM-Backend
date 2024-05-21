@@ -75,8 +75,16 @@ public class LeagueController {
                 }
 
                 team.setGroup(group);
-                team.setUser(user);
+                team.setUser(user); // Establecer el usuario en el equipo
+                team.setCurrent_users(1); // Establecer el número actual de usuarios en 1
                 Team createdTeam = leagueService.createTeam(team);
+
+                // Añadir el equipo al usuario
+                List<Team> userTeams = user.getTeams();
+                userTeams.add(createdTeam);
+                user.setTeams(userTeams);
+                userService.saveUser(user); // Guardar el usuario con el nuevo equipo
+
                 return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("Group not found in the league", HttpStatus.NOT_FOUND);
@@ -85,6 +93,7 @@ public class LeagueController {
             return new ResponseEntity<>("Error creating team: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{teamId}/join")

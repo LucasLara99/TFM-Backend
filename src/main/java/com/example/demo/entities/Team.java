@@ -1,6 +1,6 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
@@ -29,11 +29,12 @@ public class Team {
     @Column(name = "current_users", nullable = false)
     private int current_users;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

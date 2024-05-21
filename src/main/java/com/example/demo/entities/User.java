@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "user_teams",
