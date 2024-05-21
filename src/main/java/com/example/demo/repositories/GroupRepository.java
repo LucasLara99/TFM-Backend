@@ -2,11 +2,12 @@ package com.example.demo.repositories;
 
 import com.example.demo.entities.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    List<Group> findByLeagueId(Long leagueId);
+    @Query("SELECT g FROM Group g LEFT JOIN FETCH g.teams WHERE g.league.id = :leagueId")
+    List<Group> findByLeagueIdWithTeams(@Param("leagueId") Long leagueId);
 }

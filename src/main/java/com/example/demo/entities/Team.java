@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class Team {
     @Column(name = "current_users", nullable = false)
     private int current_users;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;

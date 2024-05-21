@@ -42,7 +42,7 @@ public class LeagueService {
             League foundLeague = league.get();
             foundLeague.setSeasons(seasonRepository.findByLeagueId(foundLeague.getId()));
             foundLeague.setRegistrationPeriods(registrationRepository.findByLeagueId(foundLeague.getId()));
-            foundLeague.setGroups(groupRepository.findByLeagueId(foundLeague.getId()));
+            foundLeague.setGroups(groupRepository.findByLeagueIdWithTeams(foundLeague.getId()));
             return foundLeague;
         } else {
             return null;

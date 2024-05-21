@@ -68,7 +68,6 @@ public class LeagueController {
 
             Group group = leagueService.getGroupById(groupId);
             if (group != null && group.getLeague().getId().equals(leagueId)) {
-                // Check if team name already exists in the group
                 for (Team existingTeam : group.getTeams()) {
                     if (existingTeam.getName().equals(team.getName())) {
                         return new ResponseEntity<>("Team name already exists in the group", HttpStatus.CONFLICT);
