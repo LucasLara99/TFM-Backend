@@ -53,17 +53,25 @@ public class LeagueService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
 
-        if (team.getCurrent_users() < team.getMax_places()) {
-            team.setCurrent_users(team.getCurrent_users() + 1);
-            teamRepository.save(team);
-            user.getTeams().add(team);
-            userRepository.save(user);
-        } else {
+        // Check if user is already in a team
+        boolean isInTeam = user.getTeams().stream().anyMatch(t -> t.getId().equals(teamId));
+        if (isInTeam) {
+            throw new RuntimeException("User is already in this team");
+        }
+
+        if (team.getCurrent_users() >= team.getMax_places()) {
             throw new RuntimeException("No places available in the team");
         }
 
+        team.setCurrent_users(team.getCurrent_users() + 1);
+        teamRepository.save(team);
+        user.getTeams().add(team);
+        userRepository.save(user);
+
         return user;
     }
+
+
 
     public Group getGroupById(Long groupId) {
         return groupRepository.findById(groupId).orElse(null);

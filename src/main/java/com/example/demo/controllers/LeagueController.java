@@ -75,7 +75,6 @@ public class LeagueController {
                 }
 
                 team.setGroup(group);
-                team.setUser(user); // Establecer el usuario en el equipo
                 team.setCurrent_users(1); // Establecer el número actual de usuarios en 1
                 Team createdTeam = leagueService.createTeam(team);
 
@@ -101,8 +100,11 @@ public class LeagueController {
         try {
             User user = leagueService.joinTeam(userId, teamId);
             return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("Error joining team: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
