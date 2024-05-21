@@ -1,6 +1,5 @@
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "`groups`")
-@JsonIgnoreProperties("teams")
-public class Group {
+@Table(name = "campuses")
+@JsonIgnoreProperties("leagues")
+public class Campus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +20,6 @@ public class Group {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "league_id", nullable = false)
-    private League league;
-
-    @OneToMany(mappedBy = "group")
-    private List<Team> teams;
+    @OneToMany(mappedBy = "campus")
+    private List<League> leagues;
 }

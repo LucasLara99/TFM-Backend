@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
@@ -18,24 +19,22 @@ public class League {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "season")
-    private String season;
-
-    @Column(name = "campus")
-    private String campus;
+    @ManyToOne
+    @JoinColumn(name = "campus_id")
+    private Campus campus;
 
     @Column(name = "status")
     private String status;
 
-    @Setter
-    @Transient
-    private List<Period> periods;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "league")
+    private List<Season> seasons;
 
-    @Setter
-    @Transient
-    private List<Registration> registrations;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "league")
+    private List<RegistrationPeriod> registrationPeriods;
 
-    @Setter
-    @Transient
+    @JsonManagedReference
+    @OneToMany(mappedBy = "league")
     private List<Group> groups;
 }
