@@ -1,9 +1,12 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,4 +36,17 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @ManyToOne
+    @JoinColumn(name = "captain")
+    private User captain;
+
+    @JsonBackReference
+    @ManyToMany
+    @JoinTable(
+            name = "user_teams",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users;
 }

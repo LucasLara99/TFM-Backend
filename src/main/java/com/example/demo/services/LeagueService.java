@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.entities.Group;
 import com.example.demo.entities.League;
 import com.example.demo.entities.Team;
-import com.example.demo.entities.User;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,6 @@ public class LeagueService {
     private RegistrationRepository registrationRepository;
     @Autowired
     private GroupRepository groupRepository;
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private TeamRepository teamRepository;
 
@@ -49,31 +46,11 @@ public class LeagueService {
         }
     }
 
-    public User joinTeam(Long userId, Long teamId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
-
-        // Check if user is already in a team
-        boolean isInTeam = user.getTeams().stream().anyMatch(t -> t.getId().equals(teamId));
-        if (isInTeam) {
-            throw new RuntimeException("User is already in this team");
-        }
-
-        if (team.getCurrent_users() >= team.getMax_places()) {
-            throw new RuntimeException("No places available in the team");
-        }
-
-        team.setCurrent_users(team.getCurrent_users() + 1);
-        teamRepository.save(team);
-        user.getTeams().add(team);
-        userRepository.save(user);
-
-        return user;
-    }
-
-
-
     public Group getGroupById(Long groupId) {
         return groupRepository.findById(groupId).orElse(null);
+    }
+
+    public Team getTeamById(Long teamId) {
+        return teamRepository.findById(teamId).orElse(null);
     }
 }
