@@ -40,4 +40,14 @@ public class MatchController {
         }
     }
 
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<?> getMatchesByTeam(@PathVariable Long teamId) {
+        try {
+            List<Match> matches = matchService.getMatchesByTeam(teamId);
+            return new ResponseEntity<>(matches, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving matches: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

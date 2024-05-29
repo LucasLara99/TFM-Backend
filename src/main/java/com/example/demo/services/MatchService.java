@@ -26,7 +26,11 @@ public class MatchService {
     public void generateMatches(Long groupId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
         List<Team> teams = group.getTeams();
-        Campus campus = campusRepository.findById(1L).orElseThrow(() -> new RuntimeException("Campus not found")); // Replace with actual campus id
+        Campus campus = campusRepository.findById(1L).orElseThrow(() -> new RuntimeException("Campus not found"));
+        List<Match> existingMatches = matchRepository.findMatchesByGroupId(groupId);
+        if (!existingMatches.isEmpty()) {
+            throw new RuntimeException("Matches have already been generated for this group");
+        }
 
         for (int i = 0; i < teams.size(); i++) {
             for (int j = 0; j < teams.size(); j++) {
@@ -52,5 +56,9 @@ public class MatchService {
             matches.addAll(matchRepository.findByAwayTeam(team));
         }
         return matches;
+    }
+
+    public List<Match> getMatchesByTeam(Long teamId) {
+        return matchRepository.findMatchesByTeam(teamId);
     }
 }

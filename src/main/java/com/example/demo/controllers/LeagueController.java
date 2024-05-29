@@ -111,6 +111,13 @@ public class LeagueController {
                 return new ResponseEntity<>("Team not found", HttpStatus.NOT_FOUND);
             }
 
+            League league = team.getGroup().getLeague(); // Obtener la liga del equipo
+            for (Team userTeam : user.getTeams()) { // Iterar sobre los equipos del usuario
+                if (userTeam.getGroup().getLeague().equals(league)) { // Comprobar si el equipo del usuario pertenece a la misma liga
+                    return new ResponseEntity<>("User is already in a team in this league", HttpStatus.CONFLICT);
+                }
+            }
+
             JoinRequest joinRequest = joinRequestService.createJoinRequest(user, team);
             return new ResponseEntity<>(joinRequest, HttpStatus.CREATED);
         } catch (Exception e) {
