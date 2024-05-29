@@ -35,6 +35,7 @@ public class LoginController {
             Map<String, Object> response = new HashMap<>();
             response.put("id", user.getId());
             response.put("email", user.getEmail());
+            response.put("name", user.getName());
             response.put("facultad", user.getFacultad());
             response.put("rol", user.getRol());
             response.put("token", token);
