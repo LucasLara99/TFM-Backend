@@ -27,10 +27,10 @@ public class Team {
     private String location;
 
     @Column(name = "max_places", nullable = false)
-    private int max_places;
+    private int maxPlaces;
 
     @Column(name = "current_users", nullable = false)
-    private int current_users;
+    private int currentUsers;
 
     @JsonIgnore
     @ManyToOne

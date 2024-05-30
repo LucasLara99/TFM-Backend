@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.entities.Group;
 import com.example.demo.entities.League;
 import com.example.demo.entities.Team;
+import com.example.demo.entities.User;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class LeagueService {
     private GroupRepository groupRepository;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<League> getAllLeaguesWithDetails() {
@@ -52,5 +55,16 @@ public class LeagueService {
 
     public Team getTeamById(Long teamId) {
         return teamRepository.findById(teamId).orElse(null);
+    }
+
+    public boolean userHasTeamInGroup(Long userId, Long groupId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Team> teams = user.getTeams();
+        for (Team team : teams) {
+            if (team.getGroup().getId().equals(groupId)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

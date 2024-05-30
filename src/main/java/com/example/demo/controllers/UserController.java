@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Team;
+import com.example.demo.dtos.TeamDTO;
 import com.example.demo.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping("/{userId}/teams")
     public ResponseEntity<?> getUserTeams(@PathVariable Long userId) {
         try {
-            List<Team> teams = userService.getUserTeams(userId);
+            List<TeamDTO> teams = userService.getUserTeams(userId);
             return new ResponseEntity<>(teams, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

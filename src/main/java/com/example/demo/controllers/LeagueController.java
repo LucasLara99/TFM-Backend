@@ -67,6 +67,10 @@ public class LeagueController {
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }
 
+            if (leagueService.userHasTeamInGroup(userId, groupId)) {
+                return new ResponseEntity<>("User already has a team in this group", HttpStatus.CONFLICT);
+            }
+
             Group group = leagueService.getGroupById(groupId);
             if (group != null && group.getLeague().getId().equals(leagueId)) {
                 for (Team existingTeam : group.getTeams()) {
@@ -76,7 +80,7 @@ public class LeagueController {
                 }
 
                 team.setGroup(group);
-                team.setCurrent_users(1); // Set the current number of users to 1
+                team.setCurrentUsers(1); // Set the current number of users to 1
                 team.setCaptain(user); // Set the user as the captain of the team
                 Team createdTeam = leagueService.createTeam(team);
 

@@ -10,4 +10,5 @@ public class TeamDTO {
     private String location;
     private int maxPlaces;
     private int currentUsers;
+    private Long groupId;
 }

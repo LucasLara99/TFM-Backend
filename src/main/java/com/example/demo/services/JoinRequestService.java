@@ -65,7 +65,7 @@ public class JoinRequestService {
 
             // Añadir al usuario que hizo la solicitud de unión al equipo
             team.getUsers().add(user);
-            team.setCurrent_users(team.getCurrent_users() + 1); // Incrementar el número de usuarios
+            team.setCurrentUsers(team.getCurrentUsers() + 1); // Incrementar el número de usuarios
             teamRepository.save(team);
         }
     }
