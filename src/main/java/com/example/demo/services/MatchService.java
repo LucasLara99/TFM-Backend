@@ -41,6 +41,8 @@ public class MatchService {
                     match.setDate("2024-04-31");
                     match.setTime("18:00:00");
                     match.setCampus(campus);
+                    match.setHomeTeamResult("-");
+                    match.setAwayTeamResult("-");
                     matchRepository.save(match);
                 }
             }
@@ -60,5 +62,16 @@ public class MatchService {
 
     public List<Match> getMatchesByTeam(Long teamId) {
         return matchRepository.findMatchesByTeam(teamId);
+    }
+
+    public Match updateMatch(Long matchId, String date, String time, String location, String homeTeamResult, String awayTeamResult) {
+        Match match = matchRepository.findById(matchId).orElseThrow(() -> new RuntimeException("Match not found"));
+        match.setDate(date);
+        match.setTime(time);
+        match.setCampus(campusRepository.findById(Long.parseLong(location)).orElseThrow(() -> new RuntimeException("Campus not found")));
+        match.setHomeTeamResult(homeTeamResult);
+        match.setAwayTeamResult(awayTeamResult);
+        matchRepository.save(match);
+        return match;
     }
 }

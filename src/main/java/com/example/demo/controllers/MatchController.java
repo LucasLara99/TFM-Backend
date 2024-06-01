@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Match;
+import com.example.demo.requests.MatchUpdateRequest;
 import com.example.demo.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,4 +51,13 @@ public class MatchController {
         }
     }
 
+    @PutMapping("/{matchId}")
+    public ResponseEntity<?> updateMatch(@PathVariable Long matchId, @RequestBody MatchUpdateRequest matchUpdateRequest) {
+        try {
+            Match match = matchService.updateMatch(matchId, matchUpdateRequest.getDate(), matchUpdateRequest.getTime(), matchUpdateRequest.getLocation(), matchUpdateRequest.getHomeTeamResult(), matchUpdateRequest.getAwayTeamResult());
+            return new ResponseEntity<>(match, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error updating match: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

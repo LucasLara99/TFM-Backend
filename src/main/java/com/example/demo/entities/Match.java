@@ -31,6 +31,9 @@ public class Match {
     @Column(name = "time")
     private String time;
 
-    @Column(name = "result")
-    private String result;
+    @Column(name = "home_team_result")
+    private String homeTeamResult;
+
+    @Column(name = "away_team_result")
+    private String awayTeamResult;
 }
