@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Team;
 import com.example.demo.entities.User;
 import com.example.demo.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,16 @@ public class TeamController {
             return new ResponseEntity<>(members, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving team members: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getall")
+    public ResponseEntity<?> getAllTeams() {
+        try {
+            List<Team> teams = teamService.getAllTeams();
+            return new ResponseEntity<>(teams, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving teams: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

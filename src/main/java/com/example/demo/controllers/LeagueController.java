@@ -4,6 +4,7 @@ import com.example.demo.entities.*;
 import com.example.demo.requests.TeamCreationRequest;
 import com.example.demo.services.JoinRequestService;
 import com.example.demo.services.LeagueService;
+import com.example.demo.services.TeamService;
 import com.example.demo.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,14 @@ public class LeagueController {
     private final LeagueService leagueService;
     private final UserService userService;
     private final JoinRequestService joinRequestService;
+    private final TeamService teamService;
 
     public LeagueController(LeagueService leagueService, UserService userService,
-                            JoinRequestService joinRequestService) {
+                            JoinRequestService joinRequestService, TeamService teamService) {
         this.leagueService = leagueService;
         this.userService = userService;
         this.joinRequestService = joinRequestService;
+        this.teamService = teamService;
     }
 
     @GetMapping("/all")
@@ -163,6 +166,16 @@ public class LeagueController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error handling join request: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{groupId}/teams")
+    public ResponseEntity<?> getTeamsByGroup(@PathVariable Long groupId) {
+        try {
+            List<Team> teams = teamService.getTeamsByGroupId(groupId);
+            return new ResponseEntity<>(teams, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving teams: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

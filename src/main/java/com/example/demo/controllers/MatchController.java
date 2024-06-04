@@ -54,7 +54,7 @@ public class MatchController {
     @PutMapping("/{matchId}")
     public ResponseEntity<?> updateMatch(@PathVariable Long matchId, @RequestBody MatchUpdateRequest matchUpdateRequest) {
         try {
-            Match match = matchService.updateMatch(matchId, matchUpdateRequest.getDate(), matchUpdateRequest.getTime(), matchUpdateRequest.getLocation(), matchUpdateRequest.getHomeTeamResult(), matchUpdateRequest.getAwayTeamResult());
+            Match match = matchService.updateMatch(matchId, matchUpdateRequest);
             return new ResponseEntity<>(match, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error updating match: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

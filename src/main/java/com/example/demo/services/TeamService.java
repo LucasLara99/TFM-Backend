@@ -18,4 +18,12 @@ public class TeamService {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
         return team.getUsers();
     }
+
+    public List<Team> getAllTeams() {
+        return teamRepository.findAll();
+    }
+
+    public List<Team> getTeamsByGroupId(Long groupId) {
+        return teamRepository.findByGroup_Id(groupId);
+    }
 }
