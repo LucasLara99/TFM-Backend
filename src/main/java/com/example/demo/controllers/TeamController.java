@@ -39,4 +39,14 @@ public class TeamController {
             return new ResponseEntity<>("Error retrieving teams: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/groups/{groupId}/teams")
+    public ResponseEntity<?> getTeamsByGroup(@PathVariable Long groupId) {
+        try {
+            List<Team> teams = teamService.getTeamsByGroupId(groupId);
+            return new ResponseEntity<>(teams, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving teams: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

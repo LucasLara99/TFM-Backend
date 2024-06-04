@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/matches")
@@ -34,7 +35,7 @@ public class MatchController {
     @GetMapping("/group/{groupId}")
     public ResponseEntity<?> getMatchesByGroup(@PathVariable Long groupId) {
         try {
-            List<Match> matches = matchService.getMatchesByGroup(groupId);
+            Set<Match> matches = matchService.getMatchesByGroup(groupId);
             return new ResponseEntity<>(matches, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving matches: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

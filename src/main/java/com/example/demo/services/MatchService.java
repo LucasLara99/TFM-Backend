@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MatchService {
@@ -53,10 +54,10 @@ public class MatchService {
         }
     }
 
-    public List<Match> getMatchesByGroup(Long groupId) {
+    public Set<Match> getMatchesByGroup(Long groupId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
         List<Team> teams = group.getTeams();
-        List<Match> matches = new ArrayList<>();
+        Set<Match> matches = new HashSet<>();
         for (Team team : teams) {
             matches.addAll(matchRepository.findByHomeTeam(team));
             matches.addAll(matchRepository.findByAwayTeam(team));

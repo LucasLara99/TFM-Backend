@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
@@ -36,6 +37,11 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @JsonProperty("groupId")
+    public Long getGroupId() {
+        return group != null ? group.getId() : null;
+    }
 
     @ManyToOne
     @JoinColumn(name = "captain")
